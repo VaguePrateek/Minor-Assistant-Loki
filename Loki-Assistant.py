@@ -6,7 +6,6 @@ import requests
 import datetime
 import wikipedia
 
-
 recognizer = sr.Recognizer()
 
 def speak(text):
