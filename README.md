@@ -153,11 +153,11 @@ Potential features to add:
 
 ## License
 
-[Add your license here]
+This project is open source and available for educational purposes.
 
 ## Author
 
-[Add your name/organization here]
+Developed by :  Prateek Dewangan.
 
 ---
 
