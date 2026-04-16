@@ -5,6 +5,10 @@ import music_lib
 import requests
 import datetime
 import wikipedia
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 recognizer = sr.Recognizer()
 
@@ -45,7 +49,11 @@ def command_execution(command):
             speak("Sorry, please specify a song from the music library.")
 
     elif "news" in command:
-        r = requests.get("https://newsapi.org/v2/top-headlines?country=us&apiKey=9c4c4c43ffa349068f6c81ac76fc64b6")
+        news_api_key = os.environ.get("NEWS_API_KEY")
+        if not news_api_key:
+            speak("News API key is not configured. Please set it in the .env file.")
+            return
+        r = requests.get(f"https://newsapi.org/v2/top-headlines?country=us&apiKey={news_api_key}")
     
         if r.status_code == 200:
             data = r.json()
