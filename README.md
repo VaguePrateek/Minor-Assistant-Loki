@@ -4,25 +4,26 @@ A voice-controlled personal assistant that recognizes speech commands and perfor
 
 ## Features
 
-- **Voice Recognition**: Listen and respond to voice commands
-- **Text-to-Speech**: Receive audio feedback from the assistant
+- **Web Interface**: Modern chat UI with dark theme, animated mascot, and quick-command chips
+- **Voice Recognition**: Microphone input via the browser (Chrome/Edge/Safari) or CLI
+- **Text-to-Speech**: Audio feedback in the browser and in CLI mode
 - **Web Browsing**: Open popular websites (YouTube, Google, Instagram, Facebook, LinkedIn, GitHub)
 - **Music Playback**: Play songs from a custom music library
 - **News Updates**: Get the latest US news headlines
 - **Information Search**: Wikipedia searches and Google lookups
 - **Time & Date**: Ask for current time and date
-- **Wake Words**: Activate with "Loki", "Lo ki", or "Hey Loki"
+- **Wake Words**: Activate with "Loki", "Lo ki", or "Hey Loki" (CLI mode)
 - **Exit Commands**: Graceful shutdown with exit keywords
 
 ## Requirements
 
-Ensure you have Python 3.6+ installed. The project requires the following libraries:
+Ensure you have Python 3.6+ installed. Install all dependencies with:
 
-- `speech_recognition` - For audio input and recognition
-- `pyttsx3` - For text-to-speech functionality
-- `requests` - For API calls
-- `wikipedia` - For Wikipedia searches
-- `webbrowser` - (Built-in) For opening web browsers
+```bash
+pip install -r requirements.txt
+```
+
+Key libraries: `Flask` (web server), `speech_recognition` (CLI audio input), `pyttsx3` (CLI text-to-speech), `requests` (API calls), `wikipedia` (searches), `python-dotenv` (API keys), `webbrowser` (built-in).
 
 ## Installation
 
@@ -44,7 +45,20 @@ pip install -r requirements.txt
 
 ## Usage
 
-Run the assistant:
+### Web Interface (recommended)
+
+A chat-style web frontend with an animated mascot, microphone support (Chrome/Edge/Safari), and text input:
+
+```bash
+python app.py
+```
+
+Then open http://127.0.0.1:5000 in your browser. The assistant replies with text and voice in the browser.
+
+### CLI Voice Mode
+
+The original voice-assistant loop with wake words ("Loki", "Lo ki", "Hey Loki"):
+
 ```bash
 python Loki-Assistant.py
 ```
@@ -82,8 +96,14 @@ After activation, you can use:
 
 ```
 Minor-Assistant/
-├── Loki-Assistant.py      # Main assistant application
+├── app.py                 # Flask web server (web interface)
+├── loki_core.py           # Command logic shared by web and CLI modes
+├── Loki-Assistant.py      # CLI voice assistant (wake words, TTS)
 ├── music_lib.py           # Music library with song links
+├── templates/index.html   # Web UI page
+├── static/style.css       # Web UI styling and animations
+├── static/app.js          # Web UI logic (mic, chat, TTS)
+├── static/mascot.png      # Animated mascot image
 ├── requirements.txt       # Python dependencies
 ├── .env.example           # Environment variable template
 ├── README.md              # This file
