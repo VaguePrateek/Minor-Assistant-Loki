@@ -4,6 +4,7 @@ import wikipedia
 import datetime
 import re
 import os
+from zoneinfo import ZoneInfo
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -11,10 +12,20 @@ load_dotenv()
 exit_pattern = re.compile(r"\b(?:exit|quit|goodbye|stop|bye|shut down)\b", re.IGNORECASE)
 
 
-def handle_command(command):
+def resolve_tz(timezone):
+    if not timezone:
+        return None
+    try:
+        return ZoneInfo(timezone)
+    except Exception:
+        return None
+
+
+def handle_command(command, timezone=None):
     command = command.lower().strip()
     responses = []
     url = None
+    tz = resolve_tz(timezone)
 
     if not command:
         responses.append("Please say or type a command.")
@@ -63,9 +74,11 @@ def handle_command(command):
             responses.append(f"Sorry, I couldn't find a Wikipedia page for {query}. Opening a Google search instead.")
             url = f"https://www.google.com/search?q={query}"
     elif "time" in command:
-        responses.append(f"The current time is {datetime.datetime.now().strftime('%I:%M %p')}")
+        current_time = datetime.datetime.now(tz).strftime("%I:%M %p")
+        responses.append(f"The current time is {current_time}")
     elif "date" in command:
-        responses.append(f"Today's date is {datetime.datetime.now().strftime('%B %d, %Y')}")
+        current_date = datetime.datetime.now(tz).strftime("%B %d, %Y")
+        responses.append(f"Today's date is {current_date}")
     else:
         responses.append("Sorry, I didn't understand that. Try 'open youtube', 'news', 'what is python', 'time' or 'date'.")
 

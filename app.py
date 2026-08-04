@@ -15,7 +15,7 @@ def command():
     command = (data.get("command") or "").strip()
     if not command:
         return jsonify({"responses": ["Please say or type a command."], "url": None}), 400
-    return jsonify(handle_command(command))
+    return jsonify(handle_command(command, data.get("timezone")))
 
 
 if __name__ == "__main__":

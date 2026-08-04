@@ -103,12 +103,13 @@ async function sendCommand(command) {
   document.body.classList.add('thinking');
 
   const typing = showTyping();
+  const timezone = (Intl.DateTimeFormat().resolvedOptions().timeZone) || '';
 
   try {
     const res = await fetch('/api/command', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ command })
+      body: JSON.stringify({ command, timezone })
     });
     const data = await res.json();
     const responses = data.responses || ['Sorry, no response from the assistant.'];
