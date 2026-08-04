@@ -17,10 +17,16 @@ A voice-controlled personal assistant that recognizes speech commands and perfor
 
 ## Requirements
 
-Ensure you have Python 3.6+ installed. Install all dependencies with:
+Ensure you have Python 3.6+ installed. Install dependencies with:
 
 ```bash
+# Web interface (all deployments)
 pip install -r requirements.txt
+```
+
+```bash
+# Extra dependencies for CLI voice mode (microphone + text-to-speech)
+pip install -r requirements-cli.txt
 ```
 
 Key libraries: `Flask` (web server), `speech_recognition` (CLI audio input), `pyttsx3` (CLI text-to-speech), `requests` (API calls), `wikipedia` (searches), `python-dotenv` (API keys), `webbrowser` (built-in).
@@ -104,11 +110,41 @@ Minor-Assistant/
 ├── static/style.css       # Web UI styling and animations
 ├── static/app.js          # Web UI logic (mic, chat, TTS)
 ├── static/mascot.png      # Animated mascot image
-├── requirements.txt       # Python dependencies
+├── requirements.txt       # Web dependencies (also used by Vercel)
+├── requirements-cli.txt   # Extra dependencies for CLI voice mode
+├── vercel.json            # Vercel function configuration
 ├── .env.example           # Environment variable template
 ├── README.md              # This file
 └── .env                   # Your API keys (not tracked in git)
 ```
+
+## Deployment
+
+The web interface is fully serverless-friendly and deploys to Vercel as a Flask function.
+
+### Deploy to Vercel (GitHub import)
+
+1. Push this repository to GitHub
+2. Go to [vercel.com](https://vercel.com) → **Add New Project** → import the repository (framework auto-detects Flask)
+3. In **Settings → Environment Variables**, add `NEWS_API_KEY` with your [NewsAPI](https://newsapi.org) key
+4. Click **Deploy** — the app is now live, e.g. `https://minor-assistant-loki.vercel.app`
+
+Future pushes to the main branch redeploy automatically.
+
+### Deploy with Vercel CLI
+
+```bash
+npx vercel login
+npx vercel dev        # test locally through Vercel's runtime
+npx vercel env add NEWS_API_KEY production
+npx vercel --prod
+```
+
+Notes:
+- `vercel.json` configures the function (`maxDuration: 60`)
+- Voice recognition runs in the browser (Web Speech API) — no server changes needed
+- Websites and songs open in the user's browser, not on the server
+- The NewsAPI free tier allows 100 requests per day
 
 ## Configuration
 
