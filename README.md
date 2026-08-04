@@ -34,13 +34,13 @@ cd Minor-Assistant
 
 2. Install required dependencies:
 ```bash
-pip install SpeechRecognition pyttsx3 requests wikipedia-api
+pip install -r requirements.txt
 ```
 
-3. **API Key Setup**: 
+3. **API Key Setup**:
    - The assistant uses NewsAPI for news updates
-   - Replace the API key in the code with your own from [newsapi.org](https://newsapi.org)
-   - Current key in code: `9c4c4c43ffa349068f6c81ac76fc64b6` (consider replacing for security)
+   - Copy `.env.example` to `.env` and set your own key from [newsapi.org](https://newsapi.org)
+   - The key is loaded from the `.env` file via `python-dotenv`
 
 ## Usage
 
@@ -84,8 +84,10 @@ After activation, you can use:
 Minor-Assistant/
 ├── Loki-Assistant.py      # Main assistant application
 ├── music_lib.py           # Music library with song links
+├── requirements.txt       # Python dependencies
+├── .env.example           # Environment variable template
 ├── README.md              # This file
-└── __pycache__/           # Python cache directory
+└── .env                   # Your API keys (not tracked in git)
 ```
 
 ## Configuration
@@ -108,7 +110,7 @@ music = {
 | "I didn't catch that" | Speak clearly into your microphone |
 | No internet connection error | Check your network connectivity |
 | Microphone not working | Ensure microphone is connected and permissions are granted |
-| API key error for news | Update the NewsAPI key in `command_execution()` |
+| API key error for news | Update the `NEWS_API_KEY` in your `.env` file |
 | Speech recognition fails | Try adjusting timeout values in the code |
 
 ## Error Handling
@@ -127,11 +129,8 @@ The assistant handles various error scenarios:
 
 ## Security Note
 
-The NewsAPI key is hardcoded in the script. For production use:
-- Store API keys in environment variables
-- Use a `.env` file and load it with `python-dotenv`
+API keys are stored in a `.env` file, which is ignored by git. The NewsAPI key is loaded at runtime with `python-dotenv`:
 
-Example:
 ```python
 import os
 from dotenv import load_dotenv
@@ -139,6 +138,8 @@ from dotenv import load_dotenv
 load_dotenv()
 api_key = os.getenv('NEWS_API_KEY')
 ```
+
+Never commit your `.env` file.
 
 ## Future Enhancements
 
